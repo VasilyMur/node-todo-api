@@ -30,11 +30,8 @@ app.get('/todos', (req, res) => {
     res.send({todos: todos})
   }, (err) => {
     res.status(400).send(err);
-  })
-
-
-
-})
+  });
+});
 
 
 
