@@ -8,6 +8,7 @@ const {User} = require('./models/user');
 const app = express();
 app.use(bodyParser.json());
 
+// Route 1
 app.post('/todos', (req, res) => {
 
   const todo = new Todo({
@@ -20,8 +21,20 @@ app.post('/todos', (req, res) => {
     res.status(400).send(err);
   });
 
-})
+});
 
+// Route 2
+app.get('/todos', (req, res) => {
+
+  Todo.find().then((todos) => {
+    res.send({todos: todos})
+  }, (err) => {
+    res.status(400).send(err);
+  })
+
+
+
+})
 
 
 
