@@ -36,7 +36,7 @@ app.get('/todos', (req, res) => {
 
 
 
-// Route 3: Individual todos
+// Route 3: Find Individual TODO by ID
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id;
 
