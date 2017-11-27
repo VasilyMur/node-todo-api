@@ -121,6 +121,56 @@ it('should return 404 for non-object IDs', (done) => {
     .get('/todos/123')
     .expect(404)
     .end(done)
+  });
+
+});
+
+
+describe('DELETE /todos/:id', () => {
+
+it('should remove a todo', (done) => {
+  const myId = todos[0]._id.toHexString();
+  //Start supertest request
+  request(app)
+    .delete(`/todos/${myId}`)
+    .expect(200)
+    .expect((res) => {
+      expect(res.body.todo._id).toBe(myId);
+    })
+    .end((err, res) => {
+      if (err) {
+        return done(err);
+      }
+
+      Todo.findById(myId).then((result) => {
+        expect(result).toNotExist();
+        done();
+      }).catch((err) => {
+        return done(err);
+      })
+
+    })
+
+});
+
+
+it('should return 404 if todo not found', (done) => {
+  const myId = new ObjectID().toHexString();
+  //Start supertest request
+  request(app)
+    .delete(`/todos/${myId}`)
+    .expect(404)
+    .end(done);
+});
+
+
+it('should return 404 if object ID is not valid', (done) => {
+  const myId = '123';
+  //Start supertest request
+  request(app)
+    .delete(`/todos/${myId}`)
+    .expect(404)
+    .end(done);
 });
 
 
