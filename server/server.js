@@ -7,6 +7,8 @@ const {User} = require('./models/user');
 const {ObjectID} = require('mongodb');
 
 const app = express();
+const port = process.env.PORT || 3000;
+
 app.use(bodyParser.json());
 
 // Route 1
@@ -34,8 +36,6 @@ app.get('/todos', (req, res) => {
   });
 });
 
-
-
 // Route 3: Find Individual TODO by ID
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id;
@@ -57,8 +57,8 @@ app.get('/todos/:id', (req, res) => {
 
 
 
-app.listen(3000, () => {
-  console.log('Started on port 3000');
+app.listen(port, () => {
+  console.log(`Started up at port ${port}`);
 });
 
 
