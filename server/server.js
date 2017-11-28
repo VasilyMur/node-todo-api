@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -51,11 +52,8 @@ app.get('/todos/:id', (req, res) => {
     res.send({todos});
   }).catch((err) => {
     return res.status(400).send();
-  })
-
+  });
 });
-
-
 
 // Delete Record by ID Route
 app.delete('/todos/:id', (req, res) => {
@@ -75,6 +73,38 @@ app.delete('/todos/:id', (req, res) => {
   });
 
 });
+
+
+app.patch('/todos/:id', (req, res) => {
+  const id = req.params.id;
+  const body = _.pick(req.body, ['text', 'completed'])
+
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send('Not Valid');
+  }
+
+  //if its boolean & true
+  if(_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+    if(!todo) {
+      return res.status(404).send('Not Found');
+    }
+
+    res.send({todo});
+  }).catch((err) => {
+    res.status(400).send(err);
+  })
+
+
+})
 
 
 
