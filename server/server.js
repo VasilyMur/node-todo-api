@@ -136,7 +136,7 @@ app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
 });
 
-// POST /users/login {email, password}
+// POST /users/login with email and password
 app.post('/users/login', (req, res) => {
   const body = _.pick(req.body, ['email', 'password']);
 
@@ -148,6 +148,17 @@ app.post('/users/login', (req, res) => {
     res.status(400).send();
   });
 });
+
+
+//DELETE /users/me/token
+app.delete('/users/me/token', authenticate, (req, res) => {
+  req.user.removeToken(req.token).then((user) => {
+    res.status(200).send();
+  }, () => {
+    res.status(400).send();
+  });
+});
+
 
 
 app.listen(port, () => {
